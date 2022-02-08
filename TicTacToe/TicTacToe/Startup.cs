@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using TicTacToe.Models;
 
 namespace TicTacToe
 {
@@ -28,6 +30,10 @@ namespace TicTacToe
         {
 
             services.AddControllers();
+
+            //database context
+            services.AddDbContext<GameContext>(opt => opt.UseInMemoryDatabase("GameList"));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TicTacToe", Version = "v1" });
