@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TicTacToe.Models;
-using TicTacToe.DTO;
 
 namespace TicTacToe.Services
 {
     public interface IGameServices
     {
-        Task<GameDTO> CreateGame();
+        Task<List<Game>> CreateGame();
     }
 }

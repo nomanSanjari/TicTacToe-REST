@@ -19,9 +19,13 @@ namespace TicTacToe
 {
     public class Startup
     {
+        public string ConnectionString { get; set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            // db connection string
+            ConnectionString = Configuration.GetConnectionString("DefaultConnectionString");
         }
 
         public IConfiguration Configuration { get; }
@@ -31,14 +35,14 @@ namespace TicTacToe
         {
 
             services.AddControllers();
+
+            // configure db context with db
+            services.AddDbContext<GameContext>(options => options.UseSqlite(ConnectionString));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TicTacToe", Version = "v1" });
             });
-
-            // registering AutoMapper
-            services.AddAutoMapper(typeof(Startup));
-
             // registering the Interface for Game Services
             services.AddScoped<IGameServices, GameServices>();
         }

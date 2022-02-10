@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
+using TicTacToe.Models;
 
 namespace TicTacToe
 {
@@ -13,6 +16,13 @@ namespace TicTacToe
     {
         public static void Main(string[] args)
         {
+            var options = new DbContextOptionsBuilder<GameContext>()
+                .UseSqlite("Filename=TicTacToe.db")
+                .Options;
+
+            using var db = new GameContext(options);
+            db.Database.EnsureCreated();
+
             CreateHostBuilder(args).Build().Run();
         }
 
