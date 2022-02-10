@@ -21,10 +21,16 @@ namespace TicTacToe.Controllers
             _gameServices = gameServices;
         }
 
-        [HttpGet]
+        [HttpGet("/create")]
         public async Task<ActionResult<Game>> StartGame()
         {
             return Ok(await _gameServices.CreateGame());
+        }
+
+        [HttpGet("/findAll")]
+        public async Task<ActionResult<List<Game>>> GetAllGames()
+        {
+            return Ok(await _gameServices.GetAllGames());
         }
     }
 }

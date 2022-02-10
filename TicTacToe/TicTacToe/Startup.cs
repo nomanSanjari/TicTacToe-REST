@@ -12,7 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TicTacToe.Models;
+using Microsoft.EntityFrameworkCore.InMemory;
+using TicTacToe.Data;
 using TicTacToe.Services;
 
 namespace TicTacToe
@@ -23,9 +24,6 @@ namespace TicTacToe
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
-            // db connection string
-            ConnectionString = Configuration.GetConnectionString("DefaultConnectionString");
         }
 
         public IConfiguration Configuration { get; }
@@ -33,16 +31,15 @@ namespace TicTacToe
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            // registering the database context
+            services.AddDbContext<GameDBContext>(options => options.UseInMemoryDatabase(databaseName: "TicTacToeDB"));
+            
             services.AddControllers();
-
-            // configure db context with db
-            services.AddDbContext<GameContext>(options => options.UseSqlite(ConnectionString));
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TicTacToe", Version = "v1" });
             });
+
             // registering the Interface for Game Services
             services.AddScoped<IGameServices, GameServices>();
         }

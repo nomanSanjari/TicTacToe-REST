@@ -6,6 +6,7 @@ namespace TicTacToe.Services
 {
     public interface IGameServices
     {
-        Task<List<Game>> CreateGame();
+        Task<Game> CreateGame();
+        Task<List<Game>> GetAllGames();
     }
 }
