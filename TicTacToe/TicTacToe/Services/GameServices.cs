@@ -5,6 +5,8 @@ using TicTacToe.Models;
 using TicTacToe.Data;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System.Linq;
+using System.Text.Json;
 
 namespace TicTacToe.Services
 {
@@ -18,10 +20,14 @@ namespace TicTacToe.Services
         }
 
         // ENDPOINT 1
-        public async Task<Game> CreateGame(JObject request)
+        public async Task<string> CreateGame(JObject request)
         {
+            // hope you're ready for some spaghetti code :') 
+
             const int Undefined = -1;
             const char SymbolUndefined = 'A';
+
+            // i honestly did not have an option for some reason deconstructing the object and assing to object was creating issues
 
             int ID = (int)request["id"];
             string PlayerAName = (string)request["playerA"]["name"];
@@ -55,19 +61,23 @@ namespace TicTacToe.Services
                 PlayerBSymbol = 'O';
             }
 
-            // generate PlayerA object
+            // generate PlayerA object -> reason for this being like this stated above
             Player PlayerA = new Player()
             {
+                ID = ID,
                 Name = PlayerAName,
-                Symbol = PlayerASymbol,
+                Symbol = PlayerASymbol
             };
+            _context.Players.Add(PlayerA);
 
-            // generate PlayerB object
+            // generate PlayerB object -> reason for this being like this stated above
             Player PlayerB = new Player()
             {
+                ID = ID,
                 Name = PlayerBName,
-                Symbol = PlayerBSymbol,
+                Symbol = PlayerBSymbol
             };
+            _context.Players.Add(PlayerB);
 
             // generate Game object with data
             Game game = new Game()
@@ -76,8 +86,21 @@ namespace TicTacToe.Services
                 PlayerA = PlayerA,
                 PlayerB = PlayerB,
             };
+            _context.Games.Add(game);
 
-            return game;
+            _context.SaveChanges();
+
+
+            _EP1 returnObject = new _EP1
+            {
+                GameID = game.ID,
+                PlayerA_ID = PlayerA.ID,
+                PlayerB_ID = PlayerB.ID,
+            };
+
+            string jsonReturn = JsonSerializer.Serialize(returnObject);
+
+            return jsonReturn;
         }
 
         public async Task<List<Game>> GetAllGames()

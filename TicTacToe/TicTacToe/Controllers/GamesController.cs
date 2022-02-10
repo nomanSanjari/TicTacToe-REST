@@ -23,7 +23,7 @@ namespace TicTacToe.Controllers
         }
 
         [HttpPost("/create")]
-        public async Task<ActionResult<Game>> StartGame([FromBody] JObject request)
+        public async Task<ActionResult<List<int>>> StartGame([FromBody] JObject request)
         {
             return Ok(await _gameServices.CreateGame(request));
         }
