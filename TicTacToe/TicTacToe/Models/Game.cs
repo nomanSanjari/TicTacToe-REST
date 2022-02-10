@@ -11,6 +11,7 @@ namespace TicTacToe.Models
         public int PlayerB_ID { get; set; }
         public char[,] State = new char[3, 3];
         public int Moves { get; set; } = 0;
+        public bool Won { get; set; } = false;
 
         public Game()
         {

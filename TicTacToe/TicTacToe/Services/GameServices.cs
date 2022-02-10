@@ -165,7 +165,7 @@ namespace TicTacToe.Services
 
             _context.Games.Update(game);
             
-
+            // boolean to see if a player won
             if (winFlag)
             {
                 _EP2 winner = new _EP2()
@@ -174,6 +174,10 @@ namespace TicTacToe.Services
                     Name = player.Name,
                     Symbol = player.Symbol
                 };
+                game.Won = true;
+
+                _context.Games.Update(game);
+                _context.SaveChanges();
                 string jsonReturn = JsonSerializer.Serialize(winner);
                 return jsonReturn;
             }
@@ -186,12 +190,35 @@ namespace TicTacToe.Services
         public async Task<List<Game>> GetAllGames()
         {
             List<Game> allGames = new List<Game>();
+            List<_EP3> runningGames = new List<_EP3>(); 
 
             var games = _context.Games;
             foreach (var game in games)
             {
-                allGames.Add(game);
+                if (game.Won == false)
+                {
+                    allGames.Add(game);
+                }
             }
+
+            foreach (var runningGame in allGames)
+            {
+                var PlayerA_ID = runningGame.PlayerA_ID;
+                var PlayerB_ID = runningGame.PlayerB_ID;
+
+                string PlayerA_Name = _context.Players.Find(PlayerA_ID).Name;
+                string PlayerB_Name = _context.Players.Find(PlayerB_ID).Name;
+
+                _EP3 temp = new _EP3()
+                {
+                    GameID = runningGame.ID,
+                    PlayerA = PlayerA_Name,
+                    PlayerB = PlayerB_Name,
+                    Moves = runningGame.Moves
+                };
+                runningGames.Add(temp);
+            }
+
             return allGames;
         }
     }
