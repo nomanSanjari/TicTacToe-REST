@@ -2,29 +2,32 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TicTacToe.Models;
+using TicTacToe.DTO;
+using AutoMapper;
 
 namespace TicTacToe.Services
 {
     public class GameServices : IGameServices
     {
         // volatile local storage for testing purposes
-        private static List<Game> activeGames = new List<Game>();
+        private static List<GameDTO> activeGames = new List<GameDTO>();
 
-        // method for generating random Game ID
-        private static int GenerateID()
+        private readonly IMapper _mapper;
+
+        public GameServices(IMapper mapper)
         {
-            return 0;
+            _mapper = mapper;
         }
 
         // ENDPOINT 1
-        public async Task<Game> createGame()
+        public async Task<GameDTO> CreateGame()
         {
             Game game = new Game();
             game.ID = 10000001;
+
+            activeGames.Add(_mapper.Map<GameDTO>(game));
             
-            return game;  
+            return _mapper.Map<GameDTO>(game);  
         }
-
-
-}
+    }
 }

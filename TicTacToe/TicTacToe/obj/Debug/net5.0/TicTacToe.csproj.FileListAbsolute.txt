@@ -133,3 +133,9 @@ C:\Users\noman\Desktop\VogChallenge\TicTacToe\TicTacToe\obj\Debug\net5.0\TicTacT
 C:\Users\noman\Desktop\VogChallenge\TicTacToe\TicTacToe\obj\Debug\net5.0\ref\TicTacToe.dll
 C:\Users\noman\Desktop\VogChallenge\TicTacToe\TicTacToe\obj\Debug\net5.0\TicTacToe.pdb
 C:\Users\noman\Desktop\VogChallenge\TicTacToe\TicTacToe\obj\Debug\net5.0\TicTacToe.genruntimeconfig.cache
+C:\Users\noman\Desktop\VogChallenge\TicTacToe\TicTacToe\bin\Debug\net5.0\AutoMapper.dll
+C:\Users\noman\Desktop\VogChallenge\TicTacToe\TicTacToe\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\noman\Desktop\VogChallenge\TicTacToe\TicTacToe\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\noman\Desktop\VogChallenge\TicTacToe\TicTacToe\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
+C:\Users\noman\Desktop\VogChallenge\TicTacToe\TicTacToe\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
+C:\Users\noman\Desktop\VogChallenge\TicTacToe\TicTacToe\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll

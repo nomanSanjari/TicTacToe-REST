@@ -35,6 +35,11 @@ namespace TicTacToe
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TicTacToe", Version = "v1" });
             });
+
+            // registering AutoMapper
+            services.AddAutoMapper(typeof(Startup));
+
+            // registering the Interface for Game Services
             services.AddScoped<IGameServices, GameServices>();
         }
 
