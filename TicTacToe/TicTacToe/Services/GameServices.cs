@@ -83,8 +83,9 @@ namespace TicTacToe.Services
             Game game = new Game()
             {
                 ID = ID,
-                PlayerA = PlayerA,
-                PlayerB = PlayerB,
+                PlayerA_ID = PlayerA.ID,
+                PlayerB_ID = PlayerB.ID,
+                Moves = 0
             };
             _context.Games.Add(game);
 
@@ -101,6 +102,85 @@ namespace TicTacToe.Services
             string jsonReturn = JsonSerializer.Serialize(returnObject);
 
             return jsonReturn;
+        }
+
+        // ENDPOINT 2
+        public async Task<string> UpdateGame(JObject request)
+        {
+            bool winFlag = false;
+
+            int GameID = (int)request["gameID"];
+            int Player_ID= (int)request["playerID"];
+            int row = (char)request["row"];
+            int col = (char)request["col"];
+
+            // sanitize row and col inputs
+            if (row > 2 || col > 2)
+            {
+                return "Bad Request";
+            }
+
+            Game game = _context.Games.Find(GameID);
+            Player player = _context.Players.Find(Player_ID);
+
+            if (game.State[row, col] != 'X' || game.State[row, col] != 'O')
+            {
+                game.Moves++;
+                game.State[row, col] = player.Symbol;
+            }
+            else
+            {
+                return "Bad Operation";
+            }
+
+            // check board for wins
+            if (game.Moves >= 3)
+            {
+                // horizontal win condition
+                for (int i = 0; i < 3; i++)
+                {
+                    if (game.State[i, 0] == game.State[i, 1] && game.State[i, 1] == game.State[i, 2])
+                    {
+                        winFlag = true;
+                    }
+                }
+                // vertical win condition
+                for (int i = 0; i < 3; i++)
+                {
+                    if (game.State[0, i] == game.State[1, i] && game.State[1, i] == game.State[2, i])
+                    {
+                        winFlag = true;
+                    }
+                }
+                // diagonal win condition
+                if (game.State[0, 0] == game.State[1, 1] && game.State[1, 1] == game.State[2, 2])
+                {
+                    winFlag = true;
+                }
+                if (game.State[2, 0] == game.State[1, 1] && game.State[1, 1] == game.State[0, 2])
+                {
+                    winFlag = true;
+                }
+            }
+
+            _context.Games.Update(game);
+            
+
+            if (winFlag)
+            {
+                _EP2 winner = new _EP2()
+                {
+                    PlayerID = Player_ID,
+                    Name = player.Name,
+                    Symbol = player.Symbol
+                };
+                string jsonReturn = JsonSerializer.Serialize(winner);
+                return jsonReturn;
+            }
+
+            _context.SaveChanges();
+
+            return "Registered";
         }
 
         public async Task<List<Game>> GetAllGames()
