@@ -23,9 +23,30 @@ namespace TicTacToe.Controllers
         }
 
         [HttpPost("/create")]
-        public async Task<ActionResult<List<int>>> StartGame([FromBody] JObject request)
+        public async Task<ActionResult> CreateGame([FromBody] JObject request)
         {
             return Ok(await _gameServices.CreateGame(request));
+        }
+
+        [HttpPatch("/play")]
+        public async Task<ActionResult> UpdateGame([FromBody] JObject request)
+        {
+            if(String.Equals(await _gameServices.UpdateGame(request), "Bad Request"))
+            {
+                return BadRequest("Input not formatted properly. Rows and columns must be < 3");
+            }
+            else if(String.Equals(await _gameServices.UpdateGame(request), "Bad operation"))
+            {
+                return Conflict("Space occupied!");
+            }
+            else if(String.Equals(await _gameServices.UpdateGame(request), "Registered"))
+            {
+                return Ok();
+            }
+            else
+            {
+                return Ok(await _gameServices.UpdateGame(request));
+            }
         }
 
         [HttpGet("/findAll")]
