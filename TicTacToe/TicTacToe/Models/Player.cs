@@ -6,7 +6,7 @@ namespace TicTacToe.Models
     {
         [Key]
         public int ID { get; set; }
-        public string Name { get; set; } = null;
+        public string Name { get; set; }
         public char Symbol { get; set; } = 'A';
     }
 }

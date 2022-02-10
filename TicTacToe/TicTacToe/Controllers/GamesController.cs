@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using TicTacToe.Models;
 using TicTacToe.Services;
 
@@ -21,10 +22,10 @@ namespace TicTacToe.Controllers
             _gameServices = gameServices;
         }
 
-        [HttpGet("/create")]
-        public async Task<ActionResult<Game>> StartGame()
+        [HttpPost("/create")]
+        public async Task<ActionResult<Game>> StartGame([FromBody] JObject request)
         {
-            return Ok(await _gameServices.CreateGame());
+            return Ok(await _gameServices.CreateGame(request));
         }
 
         [HttpGet("/findAll")]

@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.InMemory;
 using TicTacToe.Data;
 using TicTacToe.Services;
+using Newtonsoft.Json;
 
 namespace TicTacToe
 {
@@ -33,7 +34,9 @@ namespace TicTacToe
         {
             // registering the database context
             services.AddDbContext<GameDBContext>(options => options.UseInMemoryDatabase(databaseName: "TicTacToeDB"));
-            
+
+            // add Newtonsoft JSON stuff to services
+            services.AddControllers().AddNewtonsoftJson();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
