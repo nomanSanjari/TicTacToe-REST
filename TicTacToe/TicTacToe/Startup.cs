@@ -11,11 +11,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.InMemory;
+using TicTacToe.Data;
+using TicTacToe.Services;
+using Newtonsoft.Json;
 
 namespace TicTacToe
 {
     public class Startup
     {
+        public string ConnectionString { get; set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,12 +32,19 @@ namespace TicTacToe
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // registering the database context
+            services.AddDbContext<GameDBContext>(options => options.UseInMemoryDatabase(databaseName: "TicTacToeDB"));
 
+            // add Newtonsoft JSON stuff to services
+            services.AddControllers().AddNewtonsoftJson();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TicTacToe", Version = "v1" });
             });
+
+            // registering the Interface for Game Services
+            services.AddScoped<IGameServices, GameServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
