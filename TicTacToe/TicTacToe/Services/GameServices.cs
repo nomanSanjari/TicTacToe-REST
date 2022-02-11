@@ -187,7 +187,8 @@ namespace TicTacToe.Services
             return "Registered";
         }
 
-        public async Task<List<Game>> GetAllGames()
+        // ENDPOINT 3
+        public async Task<List<_EP3>> GetAllRunningGames()
         {
             List<Game> allGames = new List<Game>();
             List<_EP3> runningGames = new List<_EP3>(); 
@@ -219,7 +220,7 @@ namespace TicTacToe.Services
                 runningGames.Add(temp);
             }
 
-            return allGames;
+            return runningGames;
         }
     }
 }

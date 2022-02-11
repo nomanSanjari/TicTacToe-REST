@@ -22,12 +22,14 @@ namespace TicTacToe.Controllers
             _gameServices = gameServices;
         }
 
+        // ENDPOINT 1
         [HttpPost("/create")]
         public async Task<ActionResult> CreateGame([FromBody] JObject request)
         {
             return Ok(await _gameServices.CreateGame(request));
         }
 
+        // ENDPOINT 2
         [HttpPatch("/play")]
         public async Task<ActionResult> UpdateGame([FromBody] JObject request)
         {
@@ -41,18 +43,18 @@ namespace TicTacToe.Controllers
             }
             else if(String.Equals(await _gameServices.UpdateGame(request), "Registered"))
             {
-                return Ok();
+                return Ok("Move registered");
             }
-            else
-            {
-                return Ok(await _gameServices.UpdateGame(request));
-            }
+            
+            return Ok(await _gameServices.UpdateGame(request));
+            
         }
 
+        // ENDPOINT 3
         [HttpGet("/findAll")]
-        public async Task<ActionResult<List<Game>>> GetAllGames()
+        public async Task<ActionResult<List<_EP3>>> GetAllRunningGames()
         {
-            return Ok(await _gameServices.GetAllGames());
+            return Ok(await _gameServices.GetAllRunningGames());
         }
     }
 }

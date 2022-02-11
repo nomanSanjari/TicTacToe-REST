@@ -9,6 +9,6 @@ namespace TicTacToe.Services
     {
         Task<string> CreateGame(JObject request);
         Task<string> UpdateGame(JObject request);
-        Task<List<Game>> GetAllRunningGames();
+        Task<List<_EP3>> GetAllRunningGames();
     }
 }
