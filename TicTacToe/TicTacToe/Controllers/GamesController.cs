@@ -33,20 +33,22 @@ namespace TicTacToe.Controllers
         [HttpPatch("/play")]
         public async Task<ActionResult> UpdateGame([FromBody] JObject request)
         {
-            if(String.Equals(await _gameServices.UpdateGame(request), "Bad Request"))
+            var returnString = await _gameServices.UpdateGame(request);
+
+            if(String.Equals(returnString, "Bad Request"))
             {
                 return BadRequest("Input not formatted properly. Rows and columns must be < 3");
             }
-            else if(String.Equals(await _gameServices.UpdateGame(request), "Bad Operation"))
+            else if(String.Equals(returnString, "Bad Operation"))
             {
                 return Conflict("Space occupied!");
             }
-            else if(String.Equals(await _gameServices.UpdateGame(request), "Registered"))
+            else if(String.Equals(returnString, "Registered"))
             {
                 return Ok("Move registered");
             }
             
-            return Ok(await _gameServices.UpdateGame(request));
+            return Ok(returnString);
             
         }
 
@@ -55,13 +57,6 @@ namespace TicTacToe.Controllers
         public async Task<ActionResult<List<_EP3>>> GetAllRunningGames()
         {
             return Ok(await _gameServices.GetAllRunningGames());
-        }
-
-        //DIAG
-        [HttpGet]
-        public async Task<ActionResult<Game>> diag()
-        {
-            return Ok(await _gameServices.diag());
         }
     }
 }

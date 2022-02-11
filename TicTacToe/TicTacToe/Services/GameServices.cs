@@ -111,37 +111,35 @@ namespace TicTacToe.Services
 
             int GameID = (int)request["gameID"];
             int Player_ID= (int)request["playerID"];
-            int row = (int)request["row"];
-            int col = (int)request["col"];
+            int index = (int)request["index"];
 
-            Game game = _context.Games.Find(GameID);
-            Player player = _context.Players.Find(Player_ID);
+            Game game = new Game();
+            game = _context.Games.Find(GameID);
 
-            // sanitize row and col inputs
-            if (row > 2 || col > 2)
+            Player player = new Player();
+            player = _context.Players.Find(Player_ID);
+
+            // sanitize inputs
+            if (index > 8)
             {
                 return "Bad Request";
             }
 
-
-
-            if ((game.State[row, col] == 'X' || game.State[row, col] == 'O') == false)
+            if (game.State[index] !=  0)
             {
                 return "Bad Operation";
             }
-            else
-            {
-                game.Moves++;
-                game.State[row, col] = player.Symbol;
-            }
+
+            game.Moves++;
+            game.State[index] = Player_ID;
 
             // check board for wins
             if (game.Moves >= 3)
             {
                 // horizontal win condition
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 9; i+=3)
                 {
-                    if (game.State[i, 0] == player.Symbol && game.State[i, 1] == player.Symbol && game.State[i, 2] == player.Symbol)
+                    if (game.State[i] == game.State[i + 1] && game.State[i + 1] == game.State[i + 2])
                     {
                         winFlag = true;
                     }
@@ -149,17 +147,17 @@ namespace TicTacToe.Services
                 // vertical win condition
                 for (int i = 0; i < 3; i++)
                 {
-                    if (game.State[0, i] == player.Symbol && game.State[1, i] == player.Symbol && game.State[2, i] == player.Symbol)
+                    if (game.State[i] == game.State[i + 3] && game.State[i + 6] == game.State[i + 2])
                     {
                         winFlag = true;
                     }
                 }
                 // diagonal win condition
-                if (game.State[0, 0] == player.Symbol && game.State[1, 1] == player.Symbol && game.State[2, 2] == player.Symbol)
+                if (game.State[0] == game.State[4] && game.State[4] == game.State[8])
                 {
                     winFlag = true;
                 }
-                if (game.State[2, 0] == player.Symbol && game.State[1, 1] == player.Symbol && game.State[0, 2] == player.Symbol)
+                if (game.State[6] == game.State[4] && game.State[4] == game.State[0])
                 {
                     winFlag = true;
                 }
@@ -224,12 +222,6 @@ namespace TicTacToe.Services
             }
 
             return runningGames;
-        }
-
-        public async Task<Game> diag()
-        {
-            Game game = _context.Games.Find(1);
-            return game;
         }
     }
 }

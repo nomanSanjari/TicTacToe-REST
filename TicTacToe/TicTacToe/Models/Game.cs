@@ -9,21 +9,10 @@ namespace TicTacToe.Models
         public int ID { get; set; } = -1;
         public int PlayerA_ID { get; set; }
         public int PlayerB_ID { get; set; }
-        public char[,] State = new char[3, 3];
+        [NotMapped]
+        public int[] State { get; set; } = new int[9];
         public int Moves { get; set; } = 0;
         public bool Won { get; set; } = false;
-
-        public Game()
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    State[i, j] = 'A';
-                }
-            }
-        }
     }
-
     
 }
