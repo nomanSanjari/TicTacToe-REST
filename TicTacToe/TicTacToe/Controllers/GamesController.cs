@@ -37,7 +37,7 @@ namespace TicTacToe.Controllers
             {
                 return BadRequest("Input not formatted properly. Rows and columns must be < 3");
             }
-            else if(String.Equals(await _gameServices.UpdateGame(request), "Bad operation"))
+            else if(String.Equals(await _gameServices.UpdateGame(request), "Bad Operation"))
             {
                 return Conflict("Space occupied!");
             }
@@ -55,6 +55,13 @@ namespace TicTacToe.Controllers
         public async Task<ActionResult<List<_EP3>>> GetAllRunningGames()
         {
             return Ok(await _gameServices.GetAllRunningGames());
+        }
+
+        //DIAG
+        [HttpGet]
+        public async Task<ActionResult<Game>> diag()
+        {
+            return Ok(await _gameServices.diag());
         }
     }
 }

@@ -10,5 +10,7 @@ namespace TicTacToe.Services
         Task<string> CreateGame(JObject request);
         Task<string> UpdateGame(JObject request);
         Task<List<_EP3>> GetAllRunningGames();
+
+        Task<Game> diag();
     }
 }

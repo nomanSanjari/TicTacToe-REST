@@ -5,5 +5,6 @@
         public int PlayerID { get; set; }
         public string Name { get; set; }
         public char Symbol { get; set; }
+        public bool Won { get; set; } = false;
     }
 }

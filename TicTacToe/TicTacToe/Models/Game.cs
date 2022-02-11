@@ -19,9 +19,11 @@ namespace TicTacToe.Models
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    this.State[i, j] = 'A';
+                    State[i, j] = 'A';
                 }
             }
         }
     }
+
+    
 }
