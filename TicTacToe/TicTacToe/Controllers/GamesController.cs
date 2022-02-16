@@ -47,6 +47,10 @@ namespace TicTacToe.Controllers
             {
                 return Ok("Move registered");
             }
+            else if(String.Equals(returnString, "Tie"))
+            {
+                return Ok("Tie");
+            }
             
             return Ok(returnString);
             

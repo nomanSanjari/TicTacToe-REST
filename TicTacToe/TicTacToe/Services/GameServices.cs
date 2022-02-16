@@ -119,19 +119,33 @@ namespace TicTacToe.Services
             Player player = new Player();
             player = _context.Players.Find(Player_ID);
 
+            // assign position data to instance game board -> State[]
+            int[] State = new int[9];
+            State[0] = game.pos0;
+            State[1] = game.pos1;
+            State[2] = game.pos2;   
+            State[3] = game.pos3;
+            State[4] = game.pos4;
+            State[5] = game.pos5;
+            State[6] = game.pos6;
+            State[7] = game.pos7;
+            State[8] = game.pos8;
+
             // sanitize inputs
             if (index > 8)
             {
                 return "Bad Request";
             }
 
-            if (game.State[index] !=  0)
+            if (State[index] != 0)
             {
                 return "Bad Operation";
             }
-
-            game.Moves++;
-            game.State[index] = Player_ID;
+            else
+            {
+                game.Moves++;
+                State[index] = Player_ID;
+            }
 
             // check board for wins
             if (game.Moves >= 3)
@@ -139,7 +153,11 @@ namespace TicTacToe.Services
                 // horizontal win condition
                 for (int i = 0; i < 9; i+=3)
                 {
-                    if (game.State[i] == game.State[i + 1] && game.State[i + 1] == game.State[i + 2])
+                    int indexA = State[i];
+                    int indexB = State[i+1];
+                    int indexC = State[i+2];
+
+                    if (indexA == Player_ID && indexB == Player_ID && indexC == Player_ID)
                     {
                         winFlag = true;
                     }
@@ -147,21 +165,42 @@ namespace TicTacToe.Services
                 // vertical win condition
                 for (int i = 0; i < 3; i++)
                 {
-                    if (game.State[i] == game.State[i + 3] && game.State[i + 6] == game.State[i + 2])
+                    int indexA = State[i];
+                    int indexB = State[i + 3];
+                    int indexC = State[i + 6];
+
+                    if (indexA == Player_ID && indexB == Player_ID && indexC == Player_ID)
                     {
                         winFlag = true;
                     }
                 }
                 // diagonal win condition
-                if (game.State[0] == game.State[4] && game.State[4] == game.State[8])
+                if (State[0] == Player_ID && State[4] == Player_ID && State[8] == Player_ID)
                 {
                     winFlag = true;
                 }
-                if (game.State[6] == game.State[4] && game.State[4] == game.State[0])
+                if (State[6] == Player_ID && State[4] == Player_ID && State[2] == Player_ID)
                 {
                     winFlag = true;
                 }
             }
+
+            if (game.Moves == 9)
+            {
+                game.Moves = 9;
+                return "Tie";
+            }
+
+            // update game position data with instance game board -> State[]
+            game.pos0 = State[0];
+            game.pos1 = State[1];
+            game.pos2 = State[2];
+            game.pos3 = State[3];
+            game.pos4 = State[4];
+            game.pos5 = State[5];
+            game.pos6 = State[6];
+            game.pos7 = State[7];
+            game.pos8 = State[8];
 
             _context.Games.Update(game);
 
